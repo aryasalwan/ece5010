@@ -6,6 +6,7 @@
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(MergeDetailPage),typeof(MergeDetailPage));
+            Routing.RegisterRoute(nameof(SplitDetailPage), typeof(SplitDetailPage));
         }
     }
 }

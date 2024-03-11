@@ -2,8 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ece5010.MainPage"
              Title="">
-    <Grid 
-        RowDefinitions="Auto,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,Auto"
+   
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="BaseFontSize">60</x:Double>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,Auto"
           ColumnDefinitions="*,*,*">
         <Label Text="Developed by A&amp;H"
                Grid.Row="0"
@@ -11,23 +16,23 @@
                HorizontalOptions="Start"
                VerticalOptions="Start" />
         <Label x:Name="MyLabel1"
-       Text="Open Source PDF Editor"
-       Grid.Row="2"
-       Grid.Column="1"
-       Grid.RowSpan="2"
-       HorizontalOptions="CenterAndExpand"
-       FontSize="80"
-       FontFamily="TimesNewRoman"
-       VerticalOptions="Start" />
-       <Label x:Name="MyLabel2"
-      Text="PDF Editor"
-      Grid.Row="5"
-      Grid.Column="1"
-      Grid.RowSpan="2"
-      FontFamily="TimesNewRoman"
-      HorizontalOptions="CenterAndExpand"
-      FontSize="80"
-      VerticalOptions="Start" />
+               Text="Open Source"
+               Grid.Row="2"
+               Grid.Column="1"
+               Grid.RowSpan="2"
+               HorizontalOptions="CenterAndExpand"
+               FontSize="{DynamicResource BaseFontSize}"
+               FontFamily="TimesNewRoman"
+               VerticalOptions="Start" />
+        <Label x:Name="MyLabel2"
+               Text="PDF Editor"
+               Grid.Row="5"
+               Grid.Column="1"
+               Grid.RowSpan="2"
+               FontFamily="TimesNewRoman"
+               HorizontalOptions="CenterAndExpand"
+               FontSize="{DynamicResource BaseFontSize}"
+               VerticalOptions="Start" />
         <ImageButton x:Name="ImageButton0"
                         Source="merge_logo.png"
                       Grid.Row="8"
@@ -43,7 +48,7 @@
                       Grid.Row="8"
                       Grid.Column="1"
                      Grid.RowSpan="8"
-                      Clicked="OnImageButtonClicked"
+                      Clicked="OnSplitImageButtonClicked"
                       Aspect="AspectFit"
                       HorizontalOptions="Fill"
                       VerticalOptions="Fill" 

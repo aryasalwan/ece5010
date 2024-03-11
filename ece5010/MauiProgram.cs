@@ -19,6 +19,7 @@ namespace ece5010
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddTransient<MergeDetailPage>();
+            builder.Services.AddTransient<SplitDetailPage>();
             builder.Services.AddTransient<MergeDetailViewModel>();
 
             return builder.Build();

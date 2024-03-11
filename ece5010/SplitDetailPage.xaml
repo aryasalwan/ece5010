@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ece5010.SplitDetailPage"
+             Title="Split One PDF file into Two">
+    <VerticalStackLayout>
+        <HorizontalStackLayout>
+            <Entry x:Name="SplitPageNumber"
+       Placeholder="Enter the page number at which you want to split the document"
+       Keyboard="Numeric"
+       TextChanged="OnPageNumberEntered"/>
+        </HorizontalStackLayout>
+
+       <Button Text="Select PDF Files Merge"
+                Clicked="OpenFilesButtonClicked"/>
+    </VerticalStackLayout>
+</ContentPage>
