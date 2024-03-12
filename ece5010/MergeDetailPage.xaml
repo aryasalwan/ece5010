@@ -8,7 +8,7 @@
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Button Text="Select PDF Files Merge"
+        <Button Text="Select PDF Files to Merge"
                 Clicked="OpenFilesButtonClicked"/>
     </VerticalStackLayout>
 </ContentPage>

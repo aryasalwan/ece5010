@@ -10,8 +10,12 @@
        Keyboard="Numeric"
        TextChanged="OnPageNumberEntered"/>
         </HorizontalStackLayout>
-
-       <Button Text="Select PDF Files Merge"
-                Clicked="OpenFilesButtonClicked"/>
+    
+       <Button Text="Select PDF File to Split"
+                Clicked="OpenFilesButtonClicked"
+               Margin="50,50,50,10"/>
+        <Button Text="Split File"
+         Clicked="SplitFilesButtonClicked"
+                Margin="50,20,50,50"/>
     </VerticalStackLayout>
 </ContentPage>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ece5010.InsertDetailPage"
+             Title="Insert one PDF into another">
+    <VerticalStackLayout>
+        <HorizontalStackLayout>
+            <Entry x:Name="InsertPageNumber"
+       Placeholder="Enter the page number at which you want to insert the PDF"
+       Keyboard="Numeric"
+       TextChanged="OnPageNumberEntered"/>
+        </HorizontalStackLayout>
+
+        <Button Text="Select PDF File"
+                Clicked="OpenFilesButtonClicked1"
+               Margin="50,50,50,10"/>
+        <Button Text="Select File to be Inserted"
+                Clicked="OpenFilesButtonClicked2"
+               Margin="50,50,50,10"/>
+
+        <Button Text="Insert PDF"
+         Clicked="InsertFilesButtonClicked"
+                Margin="50,20,50,50"/>
+    </VerticalStackLayout>
+</ContentPage>

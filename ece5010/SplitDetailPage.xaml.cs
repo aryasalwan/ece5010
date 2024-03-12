@@ -7,74 +7,100 @@ using PdfSharp.Pdf.IO;
 namespace ece5010;
 public partial class SplitDetailPage : ContentPage
 {
+    private string[] selectedFilePaths;
     private int pageNumber=0;
+    private string file_name;
     public SplitDetailPage()
     {
         InitializeComponent();
     }
+
     private async void OpenFilesButtonClicked(object sender, EventArgs e)
     {
-        var result = await FilePicker.PickMultipleAsync(new PickOptions
+        var result = await FilePicker.PickAsync(new PickOptions
         {
             PickerTitle = "Select PDF",
             FileTypes = FilePickerFileType.Pdf
         });
         if (result != null)
         {
-            var filePaths = result.Select(file => file.FullPath).ToArray();
-            string[] SplitFilePath = await Split(filePaths);
-            if (SplitFilePath != null && SplitFilePath.Length >= 2)
+            file_name = result.FileName;
+            file_name = Path.GetFileNameWithoutExtension(file_name);
+            selectedFilePaths = new string[] { result.FullPath };
+            // Optionally, inform the user that files have been selected successfully
+            await DisplayAlert("Files Selected", $"You have selected {selectedFilePaths.Length} file(s).", "OK");
+        }
+    }
+
+    private async void SplitFilesButtonClicked(object sender, EventArgs e)
+    {
+        if (selectedFilePaths == null || !selectedFilePaths.Any())
+        {
+            await DisplayAlert("Error", "No PDF file selected. Please select a file before splitting.", "OK");
+            return;
+        }
+
+        // Split the PDF files
+        string[] splitFilePaths = await Split(selectedFilePaths);
+
+        // Check if the split operation was successful
+        if (splitFilePaths != null && splitFilePaths.Length == 2)
+        {
+            if (!string.IsNullOrEmpty(splitFilePaths[0]) && !string.IsNullOrEmpty(splitFilePaths[1]))
             {
-                if (!string.IsNullOrEmpty(SplitFilePath[0]))
+                // Display success message or open the split files as needed
+                await DisplayAlert("Success", "The PDF file has been successfully split.", "OK");
+
+                // Example of opening the first split file
+                await Launcher.OpenAsync(new OpenFileRequest
                 {
-                    await Launcher.OpenAsync(new OpenFileRequest
-                    {
-                        File = new ReadOnlyFile(SplitFilePath[0]),
-                        Title = "Open Split1"
-                    });
-                }
-                else
+                    File = new ReadOnlyFile(splitFilePaths[0]),
+                    Title = "Open First Part"
+                });
+
+                // Optionally, open the second split file
+                await Launcher.OpenAsync(new OpenFileRequest
                 {
-                    return;
-                }
-                if (!string.IsNullOrEmpty(SplitFilePath[1]))
-                {
-                    await Launcher.OpenAsync(new OpenFileRequest
-                    {
-                        File = new ReadOnlyFile(SplitFilePath[1]),
-                        Title = "Open Split2"
-                    });
-                }
-                else
-                {
-                    return;
-                }
+                    File = new ReadOnlyFile(splitFilePaths[1]),
+                    Title = "Open Second Part"
+                });
             }
             else
             {
-                // Handle the case when SplitFilePath is null or doesn't have enough elements
                 return;
             }
+        }
+        else
+        {
+            return;
         }
     }
 
     public void OnPageNumberEntered(object sender, TextChangedEventArgs e)
+    {
+        // Check if the new text is empty, allowing the user to clear the entry
+        if (string.IsNullOrEmpty(e.NewTextValue))
         {
-            if (!int.TryParse(e.NewTextValue, out pageNumber))
-            {
-                ((Entry)sender).Text = e.OldTextValue;
-                return;
-            }
-            if(!int.TryParse(e.NewTextValue,out pageNumber))
-        {
-            ((Entry)sender).Text=e.OldTextValue;
+            pageNumber = 0; // Reset pageNumber or handle as needed
+            return; // Exit early
         }
-        }
-        async Task<string[]> Split(string[] pdfFiles)
-            {
-        // Paths to the PDF files you want to merge
 
-        // Create a new PDF document
+        // Try to parse the new text value
+        if (!int.TryParse(e.NewTextValue, out int newPageNumber))
+        {
+            // If parsing fails, revert to the last valid pageNumber
+            // Optionally, you could also display a brief error message to the user explaining why their input was invalid
+            ((Entry)sender).Text = pageNumber > 0 ? pageNumber.ToString() : "";
+        }
+        else
+        {
+            // Update pageNumber with the new, successfully parsed value
+            pageNumber = newPageNumber;
+        }
+    }
+
+    async Task<string[]> Split(string[] pdfFiles)
+        {
         if (pageNumber <= 0 || pdfFiles == null || pdfFiles.Length == 0)
         {
             // Adjust the message according to your needs
@@ -103,7 +129,7 @@ public partial class SplitDetailPage : ContentPage
          }
          PdfSharp.Pdf.PdfDocument outputDocument2 = new PdfSharp.Pdf.PdfDocument();
 
-         for (int pageIndex2 = pageNumber + 1; pageIndex2 < inputDocument.PageCount; pageIndex2++)
+         for (int pageIndex2 = pageNumber; pageIndex2 < inputDocument.PageCount; pageIndex2++)
          {
              PdfPage page = inputDocument.Pages[pageIndex2];
              outputDocument2.AddPage(page);
@@ -112,13 +138,13 @@ public partial class SplitDetailPage : ContentPage
          outputDocument2.Info.Title = "Split2";
          outputDocument2.Info.Creator = inputDocument.Info.Creator;
          // Save the merged document to a file
-         string fileName = "split1.pdf";
+         string fileName = file_name + "_" + "split1.pdf";
          string localPath = "C:\\Users\\DELL\\Documents";
          string fullPath = Path.Combine(localPath, fileName);
 
          await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath, "OK");
          outputDocument1.Save(fullPath);
-         string fileName2 = "split2.pdf";
+         string fileName2 = file_name + "_" + "split2.pdf";
          string fullPath2 = Path.Combine(localPath, fileName2);
 
          await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath2, "OK");

@@ -8,63 +8,58 @@
             <x:Double x:Key="BaseFontSize">60</x:Double>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid RowDefinitions="Auto,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,Auto"
-          ColumnDefinitions="*,*,*">
-        <Label Text="Developed by A&amp;H"
-               Grid.Row="0"
-               Grid.Column="0"
-               HorizontalOptions="Start"
-               VerticalOptions="Start" />
-        <Label x:Name="MyLabel1"
-               Text="Open Source"
-               Grid.Row="2"
-               Grid.Column="1"
-               Grid.RowSpan="2"
-               HorizontalOptions="CenterAndExpand"
-               FontSize="{DynamicResource BaseFontSize}"
-               FontFamily="TimesNewRoman"
-               VerticalOptions="Start" />
-        <Label x:Name="MyLabel2"
-               Text="PDF Editor"
-               Grid.Row="5"
-               Grid.Column="1"
-               Grid.RowSpan="2"
-               FontFamily="TimesNewRoman"
-               HorizontalOptions="CenterAndExpand"
-               FontSize="{DynamicResource BaseFontSize}"
-               VerticalOptions="Start" />
+    <Grid RowSpacing="10" ColumnSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <ImageButton x:Name="ImageButton0"
                         Source="merge_logo.png"
-                      Grid.Row="8"
+                      Grid.Row="0"
                       Grid.Column="0"
-                     Grid.RowSpan="8"
                       Clicked="OnMergeImageButtonClicked"
-                      Aspect="AspectFit"
-                      HorizontalOptions="Fill"
-                      VerticalOptions="Fill" 
-                     Margin="6"/>
+                      Aspect="Fill"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand" 
+                       Margin="20,20,20,20"
+                     />
+        
         <ImageButton x:Name="ImageButton1"
                       Source="split_logo.png"
-                      Grid.Row="8"
+                      Grid.Row="0"
                       Grid.Column="1"
-                     Grid.RowSpan="8"
                       Clicked="OnSplitImageButtonClicked"
-                      Aspect="AspectFit"
-                      HorizontalOptions="Fill"
-                      VerticalOptions="Fill" 
-                     Margin="6"/>
+                     Margin="20,20,10,10"
+                     Aspect="Fill"
+                      HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand" />
 
         <ImageButton  x:Name="ImageButton2"
                         Source="insert_logo.png"
-                      Grid.Row="8"
-                      Grid.Column="2"
-                       Grid.RowSpan="8"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Aspect="Fill"
+                       Margin="20,20,20,20"
+                      Clicked="OnInsertImageButtonClicked"
+                       HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand" 
+                     />
+        <ImageButton  x:Name="ImageButton3"
+                        Source="insert_logo.png"
+                      Grid.Row="1"
+                      Grid.Column="1"
                       Clicked="OnImageButtonClicked"
-                      Aspect="AspectFit"
-                      HorizontalOptions="Fill"
-                      VerticalOptions="Fill" 
-                     Margin="6"/>
-        
-  
+                        Margin="20,20,20,20"
+                      Aspect="Fill"
+                       HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand" 
+                     />
+
+
     </Grid>
 </ContentPage>

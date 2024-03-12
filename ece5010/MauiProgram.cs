@@ -20,6 +20,7 @@ namespace ece5010
 #endif
             builder.Services.AddTransient<MergeDetailPage>();
             builder.Services.AddTransient<SplitDetailPage>();
+            builder.Services.AddTransient<InsertDetailPage>();
             builder.Services.AddTransient<MergeDetailViewModel>();
 
             return builder.Build();
