@@ -40,16 +40,13 @@ public partial class SplitDetailPage : ContentPage
             return;
         }
 
-        // Split the PDF files
         string[] splitFilePaths = await Split(selectedFilePaths);
-
-        // Check if the split operation was successful
         if (splitFilePaths != null && splitFilePaths.Length == 2)
         {
             if (!string.IsNullOrEmpty(splitFilePaths[0]) && !string.IsNullOrEmpty(splitFilePaths[1]))
             {
                 // Display success message or open the split files as needed
-                await DisplayAlert("Success", "The PDF file has been successfully split.", "OK");
+                //await DisplayAlert("Success", "The PDF file has been successfully split.", "OK");
 
                 // Example of opening the first split file
                 await Launcher.OpenAsync(new OpenFileRequest

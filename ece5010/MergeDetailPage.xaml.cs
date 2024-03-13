@@ -7,6 +7,12 @@ using PdfSharp.Pdf.IO;
 namespace ece5010;
 public partial class MergeDetailPage : ContentPage
 {
+    string[] filePaths;
+    private string file_name;
+    private string[] selectedFilePaths_to_merge;
+    private string merge_files_string;
+    private string directory_path;
+    private string file_name_no_extension;
     public MergeDetailPage()
     {
         InitializeComponent();
@@ -17,21 +23,57 @@ public partial class MergeDetailPage : ContentPage
             {
                 PickerTitle = "Select PDF",
                 FileTypes = FilePickerFileType.Pdf
+
             });
-            if (result != null)
+        foreach (var r in result)
+        {
+            file_name = r.FileName;
+            file_name_no_extension = Path.GetFileNameWithoutExtension(file_name);
+            selectedFilePaths_to_merge=new string[] {r.FileName};
+            merge_files_string=merge_files_string +file_name + " \n ";
+            // Optionally, inform the user that files have been selected successful
+        }
+        if (result != null)
+        {
+            filePaths = result.Select(file => file.FullPath).ToArray();
+        }
+        await DisplayAlert("Files Selected", $"You have selected the following {filePaths.Length} file(s). \n" +
+    merge_files_string, "OK");
+    }
+    private async void MergeFilesButtonClicked(object sender, EventArgs e)
+    {
+        if (selectedFilePaths_to_merge == null || !selectedFilePaths_to_merge.Any())
+        {
+            await DisplayAlert("Error", "No PDF file selected. Please select a file before splitting.", "OK");
+            return;
+        }
+
+        // Split the PDF files
+        string[] MergeFilePaths = await Merge(filePaths);
+
+        // Check if the split operation was successful
+        if (MergeFilePaths != null)
+        {
+            if (!string.IsNullOrEmpty(MergeFilePaths[0]))
             {
-                var filePaths = result.Select(file => file.FullPath).ToArray();
-                var MergedFilePath= await Merge(filePaths);
-            if (!string.IsNullOrEmpty(MergedFilePath))
-            {
-                await Launcher.OpenAsync(new OpenFileRequest{
-                    File = new ReadOnlyFile(MergedFilePath),
-                        Title = "Open Merged File"
+
+                await Launcher.OpenAsync(new OpenFileRequest
+                {
+                    File = new ReadOnlyFile(MergeFilePaths[0]),
+                    Title = "Open Merged File"
                 });
             }
+            else
+            {
+                return;
             }
         }
-    async Task<string> Merge(string[] pdfFiles)
+        else
+        {
+            return;
+        }
+    }
+    async Task<string[]> Merge(string[] pdfFiles)
     {
         // Paths to the PDF files you want to merge
 
@@ -41,6 +83,7 @@ public partial class MergeDetailPage : ContentPage
         foreach (string pdfFile in pdfFiles)
         {
             // Open each PDF file
+
             PdfSharp.Pdf.PdfDocument inputDocument = PdfReader.Open(pdfFile, PdfDocumentOpenMode.Import);
 
             // Iterate through each page of the input document and add it to the output document
@@ -53,12 +96,12 @@ public partial class MergeDetailPage : ContentPage
         }
 
         // Save the merged document to a file
-        string fileName = "merged.pdf";
-        string localPath = "C:\\Users\\DELL\\Documents";
-        string fullPath=Path.Combine(localPath, fileName);
-
-        await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath,"OK");
-        outputDocument.Save(fullPath);
+        file_name = file_name_no_extension + "_merged.pdf";
+        string localPath = Path.GetDirectoryName(pdfFiles[0]); ;
+        string[] fullPath=new string[1];
+        fullPath[0]=Path.Combine(localPath, file_name);
+        outputDocument.Save(fullPath[0]);
+        await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath[0],"OK");
         return fullPath;
     }
 

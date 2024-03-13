@@ -4,11 +4,11 @@
              x:Class="ece5010.MergeDetailPage"
              Title="Merge Multiple Files">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Select PDF Files to Merge"
-                Clicked="OpenFilesButtonClicked"/>
+        <Button Text="Select PDF Files"
+                Clicked="OpenFilesButtonClicked"
+                Margin="50,20,50,50"/>
+        <Button Text="Merge Files"
+                Clicked="MergeFilesButtonClicked"
+                 Margin="50,20,50,50"/>
     </VerticalStackLayout>
 </ContentPage>

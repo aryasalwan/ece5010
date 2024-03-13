@@ -95,8 +95,6 @@ public partial class InsertDetailPage : ContentPage
         // Try to parse the new text value
         if (!int.TryParse(e.NewTextValue, out int newPageNumber))
         {
-            // If parsing fails, revert to the last valid pageNumber
-            // Optionally, you could also display a brief error message to the user explaining why their input was invalid
             ((Entry)sender).Text = pageNumber > 0 ? pageNumber.ToString() : "";
         }
         else
