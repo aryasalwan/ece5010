@@ -9,7 +9,10 @@ public partial class SplitDetailPage : ContentPage
 {
     private string[] selectedFilePaths;
     private int pageNumber=0;
+    private string file_name_ex;
+    private string directory_path;
     private string file_name;
+    private string file_name_no_extension;
     public SplitDetailPage()
     {
         InitializeComponent();
@@ -24,11 +27,11 @@ public partial class SplitDetailPage : ContentPage
         });
         if (result != null)
         {
-            file_name = result.FileName;
-            file_name = Path.GetFileNameWithoutExtension(file_name);
+            file_name_ex = result.FileName;
+            file_name = Path.GetFileNameWithoutExtension(file_name_ex);
             selectedFilePaths = new string[] { result.FullPath };
             // Optionally, inform the user that files have been selected successfully
-            await DisplayAlert("Files Selected", $"You have selected {selectedFilePaths.Length} file(s).", "OK");
+            await DisplayAlert("Files Selected", $"You have selected " +file_name_ex, "OK");
         }
     }
 
@@ -55,7 +58,7 @@ public partial class SplitDetailPage : ContentPage
                     Title = "Open First Part"
                 });
 
-                // Optionally, open the second split file
+
                 await Launcher.OpenAsync(new OpenFileRequest
                 {
                     File = new ReadOnlyFile(splitFilePaths[1]),
@@ -136,19 +139,18 @@ public partial class SplitDetailPage : ContentPage
          outputDocument2.Info.Creator = inputDocument.Info.Creator;
          // Save the merged document to a file
          string fileName = file_name + "_" + "split1.pdf";
-         string localPath = "C:\\Users\\DELL\\Documents";
+         string localPath = Path.GetDirectoryName(pdfFiles[0]);
          string fullPath = Path.Combine(localPath, fileName);
 
-         await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath, "OK");
+         await DisplayAlert("Done", "Your Files have been Split. You can find the file at " + fullPath, "OK");
          outputDocument1.Save(fullPath);
          string fileName2 = file_name + "_" + "split2.pdf";
-         string fullPath2 = Path.Combine(localPath, fileName2);
+        string fullPath2 = Path.Combine(localPath, fileName2);
 
-         await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath2, "OK");
+         await DisplayAlert("Done", "Your Files have been Split. You can find the file at " + fullPath2, "OK");
          outputDocument2.Save(fullPath2);
-        string[] SplitFilePaths=[];
-        SplitFilePaths.Append(fullPath);
-        SplitFilePaths.Append(fullPath2);
+        string[] SplitFilePaths;
+        SplitFilePaths = new string[] { fullPath, fullPath2 };
         return SplitFilePaths;
 
        }

@@ -11,6 +11,8 @@ public partial class InsertDetailPage : ContentPage
     private int pageNumber = 0;
     private string main_file_name;
     private string insert_file_name;
+    private string insert_file_name_ex;
+    private string main_file_name_ex;
     public InsertDetailPage()
     {
         InitializeComponent();
@@ -25,11 +27,11 @@ public partial class InsertDetailPage : ContentPage
         });
         if (result != null)
         {
-            main_file_name = result.FileName;
-            main_file_name = Path.GetFileNameWithoutExtension(main_file_name);
+            main_file_name_ex = result.FileName;
+            main_file_name = Path.GetFileNameWithoutExtension(main_file_name_ex);
             InsertFilePaths[0] = result.FullPath;
             // Optionally, inform the user that files have been selected successfully
-            await DisplayAlert("Files Selected", $"You have selected {main_file_name} file(s).", "OK");
+            await DisplayAlert("Files Selected", $"You have selected {main_file_name_ex}", "OK");
         }
     }
     private async void OpenFilesButtonClicked2(object sender, EventArgs e)
@@ -41,10 +43,10 @@ public partial class InsertDetailPage : ContentPage
         });
         if (result != null)
         {
-            insert_file_name = result.FileName;
-            insert_file_name = Path.GetFileNameWithoutExtension(insert_file_name);
+            insert_file_name_ex = result.FileName;
+            insert_file_name = Path.GetFileNameWithoutExtension(insert_file_name_ex);
             InsertFilePaths[1] = result.FullPath;
-            await DisplayAlert("Files Selected", $"You have selected {insert_file_name} file(s).", "OK");
+            await DisplayAlert("Files Selected", $"You have selected {insert_file_name_ex}", "OK");
         }
     }
     private async void InsertFilesButtonClicked(object sender, EventArgs e)
@@ -64,12 +66,10 @@ public partial class InsertDetailPage : ContentPage
             if (!string.IsNullOrEmpty(InsertFilePaths[0]))
             {
 
-                await DisplayAlert("Success", "The Insertion Operation has been completed.", "OK");
-
                 await Launcher.OpenAsync(new OpenFileRequest
                 {
                     File = new ReadOnlyFile(InsertFilePaths[0]),
-                    Title = "Open First Part"
+                    Title = "Open FIle"
                 });
             }
             else
@@ -108,6 +108,7 @@ public partial class InsertDetailPage : ContentPage
     {
         using (PdfDocument mainDoc = PdfReader.Open(pdfFiles[0], PdfDocumentOpenMode.Import))
         using (PdfDocument insertDoc = PdfReader.Open(pdfFiles[1], PdfDocumentOpenMode.Import))
+
         {
             if (pageNumber > mainDoc.PageCount)
             {
@@ -132,16 +133,16 @@ public partial class InsertDetailPage : ContentPage
                     splitAfterDoc.AddPage(page);
                 }
 
-         
-                splitBeforeDoc.Save("C:\\Users\\DELL\\Documents\\Before_pdfsharp.pdf");
-                splitAfterDoc.Save("C:\\Users\\DELL\\Documents\\After_pdfsharp.pdf");
+                string localPath = Path.GetDirectoryName(pdfFiles[0]);
+                splitBeforeDoc.Save(localPath + "Before_pdfsharp.pdf");
+                splitAfterDoc.Save(localPath+"After_pdfsharp.pdf");
                 splitBeforeDoc.Dispose();
                 splitAfterDoc.Dispose();
 
                 // Now merge all three PdfDocument
                 PdfDocument outputDoc = new PdfDocument();
-                var splitBeforeDocActual = PdfReader.Open("C:\\Users\\DELL\\Documents\\Before_pdfsharp.pdf", PdfDocumentOpenMode.Import);
-                var splitAfterDocActual = PdfReader.Open("C:\\Users\\DELL\\Documents\\After_pdfsharp.pdf", PdfDocumentOpenMode.Import);
+                var splitBeforeDocActual = PdfReader.Open(localPath+"Before_pdfsharp.pdf", PdfDocumentOpenMode.Import);
+                var splitAfterDocActual = PdfReader.Open(localPath+"After_pdfsharp.pdf", PdfDocumentOpenMode.Import);
                 PdfDocument[] pdfArray = { splitBeforeDocActual, insertDoc, splitAfterDocActual };
 
                 foreach (PdfDocument doc in pdfArray)
@@ -153,7 +154,7 @@ public partial class InsertDetailPage : ContentPage
                     }
                 }
                 string fileName = main_file_name + "_" + "inserted.pdf";
-                string localPath = "C:\\Users\\DELL\\Documents";
+                
                 string fullPath = Path.Combine(localPath, fileName);
                 outputDoc.Save(fullPath);
                 InsertFilePaths[0] = fullPath;
@@ -161,8 +162,8 @@ public partial class InsertDetailPage : ContentPage
                 await DisplayAlert("Done", "Insertion Operation is Complete. You can find the file at " + fullPath, "OK");
                 splitBeforeDocActual.Dispose();
                 splitAfterDocActual.Dispose();
-                File.Delete("C:\\Users\\DELL\\Documents\\Before_pdfsharp.pdf");
-                File.Delete("C:\\Users\\DELL\\Documents\\After_pdfsharp.pdf");
+                File.Delete(localPath+"Before_pdfsharp.pdf");
+                File.Delete(localPath+ "After_pdfsharp.pdf");
 
                 return InsertFilePaths;
             }
