@@ -16,9 +16,24 @@ public partial class MergeDetailPage : ContentPage
     public MergeDetailPage()
     {
         InitializeComponent();
+
     }
-        private async void OpenFilesButtonClicked(object sender, EventArgs e)
+    private WebViewSource _pdfWebViewSource;
+    public WebViewSource PdfWebViewSource
+    {
+        get => _pdfWebViewSource;
+        set
         {
+            if (_pdfWebViewSource != value)
+            {
+                _pdfWebViewSource = value;
+                OnPropertyChanged(nameof(PdfWebViewSource)); // Notify UI of change
+            }
+        }
+    }
+    private async void OpenFilesButtonClicked(object sender, EventArgs e)
+        {
+        
             var result = await FilePicker.PickMultipleAsync(new PickOptions
             {
                 PickerTitle = "Select PDF",
@@ -37,8 +52,10 @@ public partial class MergeDetailPage : ContentPage
         {
             filePaths = result.Select(file => file.FullPath).ToArray();
         }
+        PdfWebViewSource = "file:///" + filePaths[0];
         await DisplayAlert("Files Selected", $"You have selected the following {filePaths.Length} file(s). \n" +
     merge_files_string, "OK");
+
     }
     private async void MergeFilesButtonClicked(object sender, EventArgs e)
     {
@@ -80,6 +97,7 @@ public partial class MergeDetailPage : ContentPage
         // Create a new PDF document
         PdfSharp.Pdf.PdfDocument outputDocument = new PdfSharp.Pdf.PdfDocument();
 
+
         foreach (string pdfFile in pdfFiles)
         {
             // Open each PDF file
@@ -101,6 +119,7 @@ public partial class MergeDetailPage : ContentPage
         string[] fullPath=new string[1];
         fullPath[0]=Path.Combine(localPath, file_name);
         outputDocument.Save(fullPath[0]);
+
         await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath[0],"OK");
         return fullPath;
     }

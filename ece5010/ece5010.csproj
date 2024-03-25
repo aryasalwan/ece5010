@@ -59,15 +59,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Remove="InsertEmptyPage_DetailPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="PDFsharp" Version="6.0.0" />
 	</ItemGroup>
+		<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
+		  <MauiCapability Include="internetClient" />
+		</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="InsertDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="InsertEmptyDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MergeDetailPage.xaml">

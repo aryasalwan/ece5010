@@ -17,7 +17,33 @@ public partial class InsertDetailPage : ContentPage
     {
         InitializeComponent();
     }
+    private WebViewSource _pdfWebViewSource1;
+    public WebViewSource PdfWebViewSource1
+    {
+        get => _pdfWebViewSource1;
+        set
+        {
+            if (_pdfWebViewSource1 != value)
+            {
+                _pdfWebViewSource1 = value;
+                OnPropertyChanged(nameof(PdfWebViewSource1)); // Notify UI of change
+            }
+        }
+    }
 
+    private WebViewSource _pdfWebViewSource2;
+    public WebViewSource PdfWebViewSource2
+    {
+        get => _pdfWebViewSource2;
+        set
+        {
+            if (_pdfWebViewSource2 != value)
+            {
+                _pdfWebViewSource2 = value;
+                OnPropertyChanged(nameof(PdfWebViewSource2)); // Notify UI of change
+            }
+        }
+    }
     private async void OpenFilesButtonClicked1(object sender, EventArgs e)
     {
         var result = await FilePicker.PickAsync(new PickOptions
@@ -31,6 +57,7 @@ public partial class InsertDetailPage : ContentPage
             main_file_name = Path.GetFileNameWithoutExtension(main_file_name_ex);
             InsertFilePaths[0] = result.FullPath;
             // Optionally, inform the user that files have been selected successfully
+            PdfWebViewSource1 = "file:///" + InsertFilePaths[0];
             await DisplayAlert("Files Selected", $"You have selected {main_file_name_ex}", "OK");
         }
     }
@@ -47,6 +74,7 @@ public partial class InsertDetailPage : ContentPage
             insert_file_name = Path.GetFileNameWithoutExtension(insert_file_name_ex);
             InsertFilePaths[1] = result.FullPath;
             await DisplayAlert("Files Selected", $"You have selected {insert_file_name_ex}", "OK");
+            PdfWebViewSource2 = "file:///" + InsertFilePaths[1];
         }
     }
     private async void InsertFilesButtonClicked(object sender, EventArgs e)

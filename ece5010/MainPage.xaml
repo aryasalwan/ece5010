@@ -49,6 +49,16 @@
                        HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand" 
                      />
+        <ImageButton  x:Name="ImageButton3"
+                        Source="insert_empty_page.png"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Aspect="Fill"
+                       Margin="20,20,20,20"
+                      Clicked="OnInsertEmptyButtonClicked"
+                       HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand" 
+                     />
 
 
     </Grid>

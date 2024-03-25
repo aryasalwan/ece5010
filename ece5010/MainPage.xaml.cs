@@ -20,6 +20,10 @@ public partial class MainPage : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(InsertDetailPage));
     }
+    async void OnInsertEmptyButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(InsertEmptyDetailPage));
+    }
     void OnImageButtonClicked(object sender, EventArgs e)
     {
         return;

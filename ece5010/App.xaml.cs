@@ -12,15 +12,29 @@ public partial class App : Application
     {
         var window = base.CreateWindow(activationState);
 
-       const int newWidth = 750;
-        const int newHeight = 600;
-
-        window.Width = newWidth;
-        window.Height = newHeight;
+        const double aspectRatio = 750.0 / 600.0; // Maintain this aspect ratio
         window.MinimumHeight = 600;
         window.MinimumWidth = 750;
-        window.MaximumHeight = 600;
-        window.MaximumWidth = 750;
+
+        // Handle the SizeChanged event to maintain aspect ratio
+        window.SizeChanged += (sender, args) =>
+        {
+            // Calculate new width and height with the aspect ratio
+            var newWidth = window.Height * aspectRatio;
+            var newHeight = window.Width / aspectRatio;
+
+            // Determine which dimension to adjust based on the window's current aspect ratio
+            if (window.Width / window.Height > aspectRatio)
+            {
+                // If the window is too wide, adjust the width
+                window.Width = newWidth;
+            }
+            else
+            {
+                // If the window is too tall, adjust the height
+                window.Height = newHeight;
+            }
+        };
 
         return window;
     }

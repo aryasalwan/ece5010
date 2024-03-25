@@ -2,13 +2,19 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ece5010.MergeDetailPage"
-             Title="Merge Multiple Files">
+             Title="Merge Multiple Files"
+             x:Name="ThisPage"
+BindingContext="{x:Reference Name=ThisPage}"
+>
+    
     <VerticalStackLayout>
         <Button Text="Select PDF Files"
                 Clicked="OpenFilesButtonClicked"
-                Margin="50,20,50,50"/>
+                Margin="50,10,50,0"/>
         <Button Text="Merge Files"
                 Clicked="MergeFilesButtonClicked"
-                 Margin="50,20,50,50"/>
+                 Margin="50,20,50,10"/>
+        <WebView Source="{Binding PdfWebViewSource}" HeightRequest="450" WidthRequest="600" Margin="0,0,0,10"></WebView>
+
     </VerticalStackLayout>
 </ContentPage>
