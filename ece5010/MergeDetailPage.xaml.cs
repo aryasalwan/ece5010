@@ -1,5 +1,7 @@
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using backend;
+
 namespace ece5010;
 public partial class MergeDetailPage : ContentPage
 {
@@ -86,37 +88,15 @@ public partial class MergeDetailPage : ContentPage
             return;
         }
     }
+    
     async Task<string[]> Merge(string[] pdfFiles)
     {
-        // Paths to the PDF files you want to merge
+        // Call backend to merge files
+        var outputPath = MergePDF.Merge(pdfFiles);
 
-        // Create a new PDF document
-        PdfSharp.Pdf.PdfDocument outputDocument = new PdfSharp.Pdf.PdfDocument();
+        string[] fullPath = [outputPath];
 
-
-        foreach (string pdfFile in pdfFiles)
-        {
-            // Open each PDF file
-
-            PdfSharp.Pdf.PdfDocument inputDocument = PdfReader.Open(pdfFile, PdfDocumentOpenMode.Import);
-
-            // Iterate through each page of the input document and add it to the output document
-            int pageCount = inputDocument.PageCount;
-            for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
-            {
-                PdfPage page = inputDocument.Pages[pageIndex];
-                outputDocument.AddPage(page);
-            }
-        }
-
-        // Save the merged document to a file
-        file_name = file_name_no_extension + "_merged.pdf";
-        string localPath = Path.GetDirectoryName(pdfFiles[0]); ;
-        string[] fullPath=new string[1];
-        fullPath[0]=Path.Combine(localPath, file_name);
-        outputDocument.Save(fullPath[0]);
-
-        await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + fullPath[0],"OK");
+        await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + outputPath, "OK");
         return fullPath;
     }
 
