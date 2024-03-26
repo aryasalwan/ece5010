@@ -16,7 +16,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        
 
         <ImageButton x:Name="ImageButton0"
                         Source="merge_logo.png"
@@ -26,7 +28,7 @@
                       Aspect="Fill"
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand" 
-                       Margin="20,30,20,20"
+                       Margin="20,20,0,20"
                      />
         
         <ImageButton x:Name="ImageButton1"
@@ -34,7 +36,7 @@
                       Grid.Row="0"
                       Grid.Column="1"
                       Clicked="OnSplitImageButtonClicked"
-                     Margin="20,30,20,20"
+                     Margin="20,20,0,20"
                      Aspect="Fill"
                       HorizontalOptions="FillAndExpand"
                        VerticalOptions="FillAndExpand" />
@@ -44,7 +46,7 @@
                       Grid.Row="1"
                       Grid.Column="0"
                       Aspect="Fill"
-                       Margin="20,20,20,20"
+                       Margin="20,0,0,20"
                       Clicked="OnInsertImageButtonClicked"
                        HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand" 
@@ -54,12 +56,31 @@
                       Grid.Row="1"
                       Grid.Column="1"
                       Aspect="Fill"
-                       Margin="20,20,20,20"
+                       Margin="20,0,0,20"
                       Clicked="OnInsertEmptyButtonClicked"
                        HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand" 
                      />
-
+        <ImageButton  x:Name="ImageButton4"
+                        Source="secure_logo.png"
+                      Grid.Row="0"
+                      Grid.Column="2"
+                      Aspect="AspectFill"
+                       Margin="10,20,20,20"
+                      Clicked="OnSecureButtonClicked"
+                       HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand" 
+                     />
+        <ImageButton  x:Name="ImageButton5"
+                        Source="secure_logo.png"
+                      Grid.Row="1"
+                      Grid.Column="2"
+                      Aspect="AspectFill"
+                       Margin="10,0,20,20"
+                      Clicked="OnInsertEmptyButtonClicked"
+                       HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand" 
+                     />
 
     </Grid>
 </ContentPage>

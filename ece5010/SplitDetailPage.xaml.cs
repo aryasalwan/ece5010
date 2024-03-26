@@ -42,7 +42,6 @@ public partial class SplitDetailPage : ContentPage
             file_name_ex = result.FileName;
             file_name = Path.GetFileNameWithoutExtension(file_name_ex);
             selectedFilePaths = new string[] { result.FullPath };
-            // Optionally, inform the user that files have been selected successfully
             PdfWebViewSource = "file:///" + selectedFilePaths[0];
             await DisplayAlert("Files Selected", $"You have selected " +file_name_ex, "OK");
 

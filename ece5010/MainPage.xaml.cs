@@ -6,7 +6,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
-
     async void OnMergeImageButtonClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(MergeDetailPage));
@@ -24,14 +23,14 @@ public partial class MainPage : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(InsertEmptyDetailPage));
     }
+    async void OnSecureButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(SecureDetailPage));
+    }
+    //This function is included in the code as a dummy call for an image button.
+    //This is quite useful when adding new features/buttons to test the layout.
     void OnImageButtonClicked(object sender, EventArgs e)
     {
         return;
     }
-
-
-
-
-
-
 }

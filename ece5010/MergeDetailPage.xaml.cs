@@ -1,7 +1,3 @@
-using ece5010.ViewModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Maui.Graphics;
-using System.Reflection.PortableExecutable;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 namespace ece5010;
@@ -61,14 +57,14 @@ public partial class MergeDetailPage : ContentPage
     {
         if (selectedFilePaths_to_merge == null || !selectedFilePaths_to_merge.Any())
         {
-            await DisplayAlert("Error", "No PDF file selected. Please select a file before splitting.", "OK");
+            await DisplayAlert("Error", "No PDF file selected. Please select a file before merging.", "OK");
             return;
         }
 
-        // Split the PDF files
+        // Merge the PDF files
         string[] MergeFilePaths = await Merge(filePaths);
 
-        // Check if the split operation was successful
+        // Check if the Merge operation was successful
         if (MergeFilePaths != null)
         {
             if (!string.IsNullOrEmpty(MergeFilePaths[0]))

@@ -12,9 +12,9 @@ public partial class App : Application
     {
         var window = base.CreateWindow(activationState);
 
-        const double aspectRatio = 750.0 / 600.0; // Maintain this aspect ratio
+        const double aspectRatio = 1125.0 / 600.0; // Maintain this aspect ratio
         window.MinimumHeight = 600;
-        window.MinimumWidth = 750;
+        window.MinimumWidth = 1125;
 
         // Handle the SizeChanged event to maintain aspect ratio
         window.SizeChanged += (sender, args) =>
