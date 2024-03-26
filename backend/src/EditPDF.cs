@@ -124,4 +124,11 @@ public class EditPDF
         pdfDoc.AddPage(page);
         
     }
+
+        public void AddPage()
+        {   
+        if (pdfDoc == null) Create();
+        pdfDoc.AddPage();
+        
+    }
 }

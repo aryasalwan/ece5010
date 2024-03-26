@@ -53,7 +53,6 @@ public partial class SecureDetailPage : ContentPage
             file_name_no_extension = Path.GetFileNameWithoutExtension(file_name);
             selectedFilePath_to_secure = new string[] { r.FileName };
             merge_files_string = merge_files_string + file_name + " \n ";
-            // Optionally, inform the user that files have been selected successful
         }
         if (result != null)
         {
@@ -72,10 +71,8 @@ public partial class SecureDetailPage : ContentPage
             return;
         }
 
-        // Split the PDF files
         string[] SecureFilePath = await Secure(filePaths);
 
-        // Check if the split operation was successful
         if (SecureFilePath != null)
         {
             if (!string.IsNullOrEmpty(SecureFilePath[0]))
@@ -130,7 +127,8 @@ public partial class SecureDetailPage : ContentPage
             await DisplayAlert("Done", "Enter a valid password", "OK");
         }
         SecuritySettings.UserPassword = password;
-        string[] SecuredFilePath= new string[1]; SecuredFilePath[0]= pdfFiles[0] + "_secured";
+        string[] SecuredFilePath= new string[1]; 
+        SecuredFilePath[0]= pdfFiles[0] + "_secured";
         document.Save(SecuredFilePath[0]);
 
         await DisplayAlert("Done", "Your File has been Secured. You can find the file at " + SecuredFilePath[0], "OK");

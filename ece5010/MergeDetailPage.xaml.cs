@@ -94,10 +94,10 @@ public partial class MergeDetailPage : ContentPage
         // Call backend to merge files
         var outputPath = MergePDF.Merge(pdfFiles);
 
-        string[] fullPath = [outputPath];
+        string[] outputPaths = [outputPath];
 
         await DisplayAlert("Done", "Your Files have been Merged. You can find the file at " + outputPath, "OK");
-        return fullPath;
+        return outputPaths;
     }
 
 }

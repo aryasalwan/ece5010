@@ -4,6 +4,8 @@ using Microsoft.Maui.Graphics;
 using System.Reflection.PortableExecutable;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using backend;
+
 namespace ece5010;
 public partial class InsertDetailPage : ContentPage
 {
@@ -56,7 +58,6 @@ public partial class InsertDetailPage : ContentPage
             main_file_name_ex = result.FileName;
             main_file_name = Path.GetFileNameWithoutExtension(main_file_name_ex);
             InsertFilePaths[0] = result.FullPath;
-            // Optionally, inform the user that files have been selected successfully
             PdfWebViewSource1 = "file:///" + InsertFilePaths[0];
             await DisplayAlert("Files Selected", $"You have selected {main_file_name_ex}", "OK");
         }
@@ -134,67 +135,26 @@ public partial class InsertDetailPage : ContentPage
 
     async Task<string[]> Insert(string[] pdfFiles)
     {
-        using (PdfDocument mainDoc = PdfReader.Open(pdfFiles[0], PdfDocumentOpenMode.Import))
-        using (PdfDocument insertDoc = PdfReader.Open(pdfFiles[1], PdfDocumentOpenMode.Import))
-
+        if (pageNumber <= 0 || pdfFiles == null || pdfFiles.Length == 0)
         {
-            if (pageNumber > mainDoc.PageCount)
-            {
-                Console.WriteLine("Out of index error.");
-                return null;
-            }
-            else
-            {
-                // Split first PdfDocument
-                PdfDocument splitBeforeDoc = new PdfDocument();
-                PdfDocument splitAfterDoc = new PdfDocument();
-
-                for (int pageIndex = 0; pageIndex < pageNumber; pageIndex++)
-                {
-                    PdfPage page = mainDoc.Pages[pageIndex];
-                    splitBeforeDoc.AddPage(page);
-                }
-
-                for (int pageIndex = pageNumber; pageIndex < mainDoc.PageCount; pageIndex++)
-                {
-                    PdfPage page = mainDoc.Pages[pageIndex];
-                    splitAfterDoc.AddPage(page);
-                }
-
-                string localPath = Path.GetDirectoryName(pdfFiles[0]);
-                splitBeforeDoc.Save(localPath + "Before_pdfsharp.pdf");
-                splitAfterDoc.Save(localPath+"After_pdfsharp.pdf");
-                splitBeforeDoc.Dispose();
-                splitAfterDoc.Dispose();
-
-                // Now merge all three PdfDocument
-                PdfDocument outputDoc = new PdfDocument();
-                var splitBeforeDocActual = PdfReader.Open(localPath+"Before_pdfsharp.pdf", PdfDocumentOpenMode.Import);
-                var splitAfterDocActual = PdfReader.Open(localPath+"After_pdfsharp.pdf", PdfDocumentOpenMode.Import);
-                PdfDocument[] pdfArray = { splitBeforeDocActual, insertDoc, splitAfterDocActual };
-
-                foreach (PdfDocument doc in pdfArray)
-                {
-                    for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
-                    {
-                        PdfPage page = doc.Pages[pageIndex];
-                        outputDoc.AddPage(page);
-                    }
-                }
-                string fileName = main_file_name + "_" + "inserted.pdf";
-                
-                string fullPath = Path.Combine(localPath, fileName);
-                outputDoc.Save(fullPath);
-                InsertFilePaths[0] = fullPath;
-                InsertFilePaths[1] = null;
-                await DisplayAlert("Done", "Insertion Operation is Complete. You can find the file at " + fullPath, "OK");
-                splitBeforeDocActual.Dispose();
-                splitAfterDocActual.Dispose();
-                File.Delete(localPath+"Before_pdfsharp.pdf");
-                File.Delete(localPath+ "After_pdfsharp.pdf");
-
-                return InsertFilePaths;
-            }
+            // Adjust the message according to your needs
+            await DisplayAlert("Error", "Please select a valid page number and PDF file before splitting.", "OK");
+            return null;
         }
+
+        PdfDocument mainDoc = PdfReader.Open(pdfFiles[0], PdfDocumentOpenMode.Import);
+        if (pageNumber > mainDoc.PageCount)
+        {
+            Console.WriteLine("Out of index error.");
+            return null;
+        }
+
+        var outputPath = InsertPDF.Insert(pdfFiles[0], pdfFiles[1], pageNumber);
+
+        string[] outputPaths = [outputPath];
+
+        await DisplayAlert("Done", "Insertion Operation is Complete. You can find the file at " + outputPath, "OK");
+        return outputPaths;
+
     }
 }
