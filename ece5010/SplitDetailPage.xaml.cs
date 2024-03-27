@@ -1,3 +1,7 @@
+using ece5010.ViewModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Maui.Graphics;
+using System.Reflection.PortableExecutable;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using backend;
@@ -84,7 +88,7 @@ public partial class SplitDetailPage : ContentPage
 
     public void OnPageNumberEntered(object sender, TextChangedEventArgs e)
     {
-
+        // Check if the new text is empty, allowing the user to clear the entry
         if (string.IsNullOrEmpty(e.NewTextValue))
         {
             pageNumber = 0;
