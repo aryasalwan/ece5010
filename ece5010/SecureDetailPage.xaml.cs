@@ -128,7 +128,9 @@ public partial class SecureDetailPage : ContentPage
         }
         SecuritySettings.UserPassword = password;
         string[] SecuredFilePath= new string[1]; 
-        SecuredFilePath[0]= pdfFiles[0] + "_secured";
+        var localPath = Path.GetDirectoryName(pdfFiles[0]);
+        var outputFileName = Path.GetFileNameWithoutExtension(pdfFiles[0]) + "_secured.pdf";
+        SecuredFilePath[0]= Path.Combine(localPath, outputFileName);
         document.Save(SecuredFilePath[0]);
 
         await DisplayAlert("Done", "Your File has been Secured. You can find the file at " + SecuredFilePath[0], "OK");
