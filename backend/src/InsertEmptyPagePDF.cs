@@ -5,13 +5,16 @@ using PdfSharp.Pdf.IO;
 
 namespace backend;
 
+/// <summary>
+/// InsertEmptyPagePDF class
+/// </summary>
 public class InsertEmptyPagePDF : EditPDF
 {
     public InsertEmptyPagePDF(string? filePath = null) : base(filePath) {}
 
     public static string InsertEmptyPage(string mainFilePath, int pageNumber)
     {   
-        // 
+        // Uses Insert Class
         var emptyPageFile = new InsertEmptyPagePDF();
         emptyPageFile.AddPage();
 

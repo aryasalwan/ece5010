@@ -118,6 +118,10 @@ public class EditPDF
         }
     }
 
+    /// <summary>
+    /// Add a page given the page
+    /// </summary>
+    /// <param name="page"></param>
     public void AddPage(PdfPage page)
     {   
         if (pdfDoc == null) Create();
@@ -125,8 +129,11 @@ public class EditPDF
         
     }
 
-        public void AddPage()
-        {   
+    /// <summary>
+    /// Add an empty page
+    /// </summary>
+    public void AddPage()
+    {   
         if (pdfDoc == null) Create();
         pdfDoc.AddPage();
         
