@@ -16,3 +16,8 @@ In summary, run below:
 
 - `dotnet sln add backend/backend.csproj`
 - `dotnet add ece5010/ece5010.csproj reference backend/backend.csproj`
+
+
+To release the project, refer here:
+https://learn.microsoft.com/en-us/dotnet/maui/windows/deployment/publish-unpackaged-cli?view=net-maui-8.0
+
