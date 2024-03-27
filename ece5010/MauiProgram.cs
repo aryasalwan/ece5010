@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using ece5010.ViewModel;
 namespace ece5010
 {
     public static class MauiProgram
@@ -23,8 +22,7 @@ namespace ece5010
             builder.Services.AddTransient<InsertDetailPage>();
             builder.Services.AddTransient<InsertEmptyDetailPage>();
             builder.Services.AddTransient<SecureDetailPage>();
-            builder.Services.AddTransient<MergeDetailViewModel>();
-
+            builder.Services.AddTransient<InvertColorDetailPage>();
             return builder.Build();
         }
     }

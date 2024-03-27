@@ -25,7 +25,7 @@ public partial class MergeDetailPage : ContentPage
             if (_pdfWebViewSource != value)
             {
                 _pdfWebViewSource = value;
-                OnPropertyChanged(nameof(PdfWebViewSource)); // Notify UI of change
+                OnPropertyChanged(nameof(PdfWebViewSource)); 
             }
         }
     }
@@ -44,7 +44,7 @@ public partial class MergeDetailPage : ContentPage
             file_name_no_extension = Path.GetFileNameWithoutExtension(file_name);
             selectedFilePaths_to_merge=new string[] {r.FileName};
             merge_files_string=merge_files_string +file_name + " \n ";
-            // Optionally, inform the user that files have been selected successful
+ 
         }
         if (result != null)
         {
@@ -63,10 +63,8 @@ public partial class MergeDetailPage : ContentPage
             return;
         }
 
-        // Merge the PDF files
         string[] MergeFilePaths = await Merge(filePaths);
 
-        // Check if the Merge operation was successful
         if (MergeFilePaths != null)
         {
             if (!string.IsNullOrEmpty(MergeFilePaths[0]))
