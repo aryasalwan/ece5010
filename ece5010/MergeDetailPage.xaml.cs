@@ -23,26 +23,29 @@ public partial class MergeDetailPage : ContentPage
             if (_pdfWebViewSource != value)
             {
                 _pdfWebViewSource = value;
-                OnPropertyChanged(nameof(PdfWebViewSource)); // Notify UI of change
+                OnPropertyChanged(nameof(PdfWebViewSource)); 
             }
         }
     }
     private async void OpenFilesButtonClicked(object sender, EventArgs e)
         {
-        
-            var result = await FilePicker.PickMultipleAsync(new PickOptions
-            {
-                PickerTitle = "Select PDF",
-                FileTypes = FilePickerFileType.Pdf
+        /*
+        var result = await FilePicker.PickMultipleAsync(new PickOptions
+        {
+            PickerTitle = "Select PDF",
+            FileTypes = FilePickerFileType.Pdf
 
-            });
+        });
+        */
+        var result = await FilePicker.PickMultipleAsync();
+        Console.WriteLine(result);
         foreach (var r in result)
         {
             file_name = r.FileName;
             file_name_no_extension = Path.GetFileNameWithoutExtension(file_name);
             selectedFilePaths_to_merge=new string[] {r.FileName};
             merge_files_string=merge_files_string +file_name + " \n ";
-            // Optionally, inform the user that files have been selected successful
+ 
         }
         if (result != null)
         {
@@ -61,10 +64,8 @@ public partial class MergeDetailPage : ContentPage
             return;
         }
 
-        // Merge the PDF files
         string[] MergeFilePaths = await Merge(filePaths);
 
-        // Check if the Merge operation was successful
         if (MergeFilePaths != null)
         {
             if (!string.IsNullOrEmpty(MergeFilePaths[0]))
@@ -88,19 +89,15 @@ public partial class MergeDetailPage : ContentPage
     }
     async Task<string[]> Merge(string[] pdfFiles)
     {
-        // Paths to the PDF files you want to merge
 
-        // Create a new PDF document
         PdfSharp.Pdf.PdfDocument outputDocument = new PdfSharp.Pdf.PdfDocument();
 
 
         foreach (string pdfFile in pdfFiles)
         {
-            // Open each PDF file
 
             PdfSharp.Pdf.PdfDocument inputDocument = PdfReader.Open(pdfFile, PdfDocumentOpenMode.Import);
 
-            // Iterate through each page of the input document and add it to the output document
             int pageCount = inputDocument.PageCount;
             for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
             {
@@ -109,7 +106,6 @@ public partial class MergeDetailPage : ContentPage
             }
         }
 
-        // Save the merged document to a file
         file_name = file_name_no_extension + "_merged.pdf";
         string localPath = Path.GetDirectoryName(pdfFiles[0]); ;
         string[] fullPath=new string[1];

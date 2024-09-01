@@ -1,7 +1,3 @@
-using ece5010.ViewModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Maui.Graphics;
-using System.Reflection.PortableExecutable;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 namespace ece5010;
@@ -91,23 +87,21 @@ public partial class SplitDetailPage : ContentPage
 
     public void OnPageNumberEntered(object sender, TextChangedEventArgs e)
     {
-        // Check if the new text is empty, allowing the user to clear the entry
+
         if (string.IsNullOrEmpty(e.NewTextValue))
         {
-            pageNumber = 0; // Reset pageNumber or handle as needed
-            return; // Exit early
+            pageNumber = 0;
+            return; 
         }
 
         // Try to parse the new text value
         if (!int.TryParse(e.NewTextValue, out int newPageNumber))
         {
-            // If parsing fails, revert to the last valid pageNumber
-            // Optionally, you could also display a brief error message to the user explaining why their input was invalid
+
             ((Entry)sender).Text = pageNumber > 0 ? pageNumber.ToString() : "";
         }
         else
         {
-            // Update pageNumber with the new, successfully parsed value
             pageNumber = newPageNumber;
         }
     }

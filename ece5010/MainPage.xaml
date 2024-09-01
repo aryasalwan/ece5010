@@ -72,12 +72,12 @@
                         VerticalOptions="FillAndExpand" 
                      />
         <ImageButton  x:Name="ImageButton5"
-                        Source="secure_logo.png"
+                        Source="invert_logo.png"
                       Grid.Row="1"
                       Grid.Column="2"
-                      Aspect="AspectFill"
+                      Aspect="Fill"
                        Margin="10,0,20,20"
-                      Clicked="OnInsertEmptyButtonClicked"
+                      Clicked="OnInvertColorButtonClicked"
                        HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand" 
                      />
