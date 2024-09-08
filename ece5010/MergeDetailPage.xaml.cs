@@ -1,5 +1,6 @@
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+
 namespace ece5010;
 public partial class MergeDetailPage : ContentPage
 {
@@ -14,6 +15,7 @@ public partial class MergeDetailPage : ContentPage
         InitializeComponent();
 
     }
+
     private WebViewSource _pdfWebViewSource;
     public WebViewSource PdfWebViewSource
     {
@@ -23,7 +25,7 @@ public partial class MergeDetailPage : ContentPage
             if (_pdfWebViewSource != value)
             {
                 _pdfWebViewSource = value;
-                OnPropertyChanged(nameof(PdfWebViewSource)); 
+                OnPropertyChanged(nameof(PdfWebViewSource));
             }
         }
     }
