@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.Graphics;
 using System.Reflection.PortableExecutable;
+using CommunityToolkit.Maui.Storage;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 
@@ -8,16 +9,21 @@ namespace ece5010;
 
 public partial class InsertEmptyDetailPage : ContentPage
 {
+    IFileSaver fileSaver;
+    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
     private string[] selectedFilePaths;
     private int pageNumber = 0;
     private string file_name_ex;
     private string directory_path;
     private string file_name;
     private string file_name_no_extension;
-    public InsertEmptyDetailPage()
-	{
-		InitializeComponent();
-	}
+
+    public InsertEmptyDetailPage(IFileSaver fileSaver)
+    {
+        InitializeComponent();
+        this.fileSaver = fileSaver;
+    }
     private WebViewSource _pdfWebViewSource;
     public WebViewSource PdfWebViewSource
     {
@@ -33,20 +39,32 @@ public partial class InsertEmptyDetailPage : ContentPage
     }
     private async void OpenFilesButtonClicked(object sender, EventArgs e)
     {
-        var result = await FilePicker.PickAsync(new PickOptions
-        {
-            PickerTitle = "Select PDF",
-            FileTypes = FilePickerFileType.Pdf
-        });
+        //var result = await FilePicker.PickAsync(new PickOptions
+        //{
+        //    PickerTitle = "Select PDF",
+        //    FileTypes = FilePickerFileType.Pdf
+        //});
+        var result = await FilePicker.PickAsync();
         if (result != null)
         {
-            file_name_ex = result.FileName;
-            file_name = Path.GetFileNameWithoutExtension(file_name_ex);
-            selectedFilePaths = new string[] { result.FullPath };
-            // Optionally, inform the user that files have been selected successfully
-            PdfWebViewSource = "file:///" + selectedFilePaths[0];
-            await DisplayAlert("Files Selected", $"You have selected " + file_name_ex, "OK");
+            var file_ext = Path.GetExtension(result.FullPath);
+            Console.WriteLine(file_ext);
+            if (file_ext == ".pdf")
+            {
+                file_name_ex = result.FileName;
+                file_name = Path.GetFileNameWithoutExtension(file_name_ex);
+                selectedFilePaths = new string[] { result.FullPath };
+                // Optionally, inform the user that files have been selected successfully
+                PdfWebViewSource = "file:///" + selectedFilePaths[0];
+                await DisplayAlert("Files Selected", $"You have selected " + file_name_ex, "OK");
+            }
+            else if (file_ext != ".pdf")
+            {
+                await DisplayAlert("Wrong file type selected", "Please select a valid .pdf file \n", "OK");
+                return;
+            }
         }
+        else { return; }
     }
     private async void InsertEmptyButtonClicked(object sender, EventArgs e)
     {
@@ -55,46 +73,44 @@ public partial class InsertEmptyDetailPage : ContentPage
             await DisplayAlert("Error", "No PDF file selected. Please select a file before splitting.", "OK");
             return;
         }
+        await InsertEmptyPage(selectedFilePaths);
+        //string[] FilePaths = await InsertEmptyPage(selectedFilePaths);
+        //if (FilePaths != null)
+        //{
+        //    if (!string.IsNullOrEmpty(FilePaths[0]))
+        //    {
+        //        // Display success message or open the split files as needed
+        //        //await DisplayAlert("Success", "The PDF file has been successfully split.", "OK");
 
-        string[] FilePaths = await InsertEmptyPage(selectedFilePaths);
-        if (FilePaths != null)
-        {
-            if (!string.IsNullOrEmpty(FilePaths[0]))
-            {
-                // Display success message or open the split files as needed
-                //await DisplayAlert("Success", "The PDF file has been successfully split.", "OK");
-
-                // Example of opening the first split file
-                await Launcher.OpenAsync(new OpenFileRequest
-                {
-                    File = new ReadOnlyFile(FilePaths[0]),
-                    Title = "Open File"
-                });
-            }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
-            return;
-        }
+        //        // Example of opening the first split file
+        //        await Launcher.OpenAsync(new OpenFileRequest
+        //        {
+        //            File = new ReadOnlyFile(FilePaths[0]),
+        //            Title = "Open File"
+        //        });
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
+        //}
+        //else
+        //{
+        //    return;
+        //}
     }
     public void OnPageNumberEntered(object sender, TextChangedEventArgs e)
     {
-        // Check if the new text is empty, allowing the user to clear the entry
         if (string.IsNullOrEmpty(e.NewTextValue))
         {
-            pageNumber = 0; // Reset pageNumber or handle as needed
-            return; // Exit early
+            pageNumber = 0;
+            return;
         }
 
         // Try to parse the new text value
         if (!int.TryParse(e.NewTextValue, out int newPageNumber))
         {
-            // If parsing fails, revert to the last valid pageNumber
-            // Optionally, you could also display a brief error message to the user explaining why their input was invalid
+
             ((Entry)sender).Text = pageNumber > 0 ? pageNumber.ToString() : "";
         }
         else
@@ -105,6 +121,11 @@ public partial class InsertEmptyDetailPage : ContentPage
     }
     async Task<string[]> InsertEmptyPage(string[] pdfFiles)
     {
+        Console.WriteLine(pageNumber);
+        if (pageNumber > 0)
+        {
+            pageNumber--;
+        }
         if (pageNumber <= 0 || pdfFiles == null || pdfFiles.Length == 0)
         {
             // Adjust the message according to your needs
@@ -138,17 +159,32 @@ public partial class InsertEmptyDetailPage : ContentPage
             PdfPage page = inputDocument.Pages[pageIndex];
             outputDocument1.AddPage(page);
         }
-        // Save the merged document to a file
-        string fileName = file_name + "_" + "notes.pdf";
-        string localPath = Path.GetDirectoryName(pdfFiles[0]);
-        string fullPath = Path.Combine(localPath, fileName);
-        outputDocument1.Save(fullPath);
-        await DisplayAlert("Done", "You can find the file at " + fullPath, "OK");
+        file_name = file_name + "_" + "notes.pdf";
+        //string localPath = Path.GetDirectoryName(pdfFiles[0]);
+        //string fullPath = Path.Combine(localPath, fileName);
+        using (MemoryStream stream = new MemoryStream())
+        {
+            string fn = "notes.pdf";
+            try
+            {
+                Console.WriteLine(outputDocument1);
+                string localPath = Path.GetDirectoryName(pdfFiles[0]);
+                outputDocument1.Save(stream, false);
+                var path = await fileSaver.SaveAsync(localPath, fn, stream, cancellationTokenSource.Token);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
-        string[] SplitFilePaths;
-        SplitFilePaths = new string[] { fullPath};
-        return SplitFilePaths;
+        };
+        //outputDocument1.Save(fullPath);
+        //await DisplayAlert("Done", "You can find the file at " + fullPath, "OK");
 
+        //string[] SplitFilePaths;
+        //SplitFilePaths = new string[] { fullPath };
+        //return SplitFilePaths;
+        return null;
     }
 
 }

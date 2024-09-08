@@ -14,8 +14,7 @@ BindingContext="{x:Reference Name=ThisPage}"
         <Button Text="Merge Files"
                 Clicked="MergeFilesButtonClicked"
                  Margin="50,20,50,10"/>
-        <!--<WebView Source="{Binding PdfWebViewSource}" HeightRequest="450" WidthRequest="600" Margin="0,0,0,10"></WebView>-->
+        <WebView Source="{Binding PdfWebViewSource}" HeightRequest="450" WidthRequest="600" Margin="0,0,0,10"></WebView>
 
-        <WebView Source="Assets/web/viewer.html?file=/Users/arya/Downloads/Foraco International SA-Arya.pdf" />
     </VerticalStackLayout>
 </ContentPage>
