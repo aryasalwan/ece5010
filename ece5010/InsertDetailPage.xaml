@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ece5010.InsertDetailPage"
+             Title="Insert one PDF into another"
+             x:Name="ThisPage"
+             BindingContext="{x:Reference Name=ThisPage}">
+    <VerticalStackLayout>
+        <HorizontalStackLayout>
+            <Entry x:Name="InsertPageNumber"
+       Placeholder="Enter the page number at which you want to insert the PDF"
+       Keyboard="Numeric"
+       TextChanged="OnPageNumberEntered"/>
+        </HorizontalStackLayout>
+
+        <Button Text="Select PDF File"
+                Clicked="OpenFilesButtonClicked1"
+               Margin="50,10,50,0"/>
+        <Button Text="Select File to be Inserted"
+                Clicked="OpenFilesButtonClicked2"
+               Margin="50,10,50,0"/>
+
+        <Button Text="Insert PDF"
+         Clicked="InsertFilesButtonClicked"
+                Margin="50,10,50,10"/>
+        <Grid Margin="0,10" RowSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--<WebView Grid.Column="0"
+                     Source="{Binding PdfWebViewSource1}"
+                     HeightRequest="400"
+                     WidthRequest="380"
+                     Margin="0,0,0,10"/>
+            <WebView Grid.Column="1"
+                     Source="{Binding PdfWebViewSource2}"
+                     HeightRequest="400"
+                     WidthRequest="380"
+                     Margin="0,0,0,10">
+                
+            </WebView>-->
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

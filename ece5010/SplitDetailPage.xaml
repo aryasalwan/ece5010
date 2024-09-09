@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ece5010.SplitDetailPage"
+             Title="Split One PDF file into Two"             
+             x:Name="ThisPage"
+             BindingContext="{x:Reference Name=ThisPage}">
+    
+    <VerticalStackLayout>
+        <HorizontalStackLayout>
+            <Entry x:Name="SplitPageNumber"
+       Placeholder="Enter the page number at which you want to split the document"
+       Keyboard="Numeric"
+       TextChanged="OnPageNumberEntered"/>
+        </HorizontalStackLayout>
+    
+       <Button Text="Select PDF File to Split"
+                Clicked="OpenFilesButtonClicked"
+               Margin="50,10,50,0"/>
+        <Button Text="Split File"
+         Clicked="SplitFilesButtonClicked"
+                Margin="50,10,50,10"/>
+        <!--<WebView Source="{Binding PdfWebViewSource}" HeightRequest="400" WidthRequest="600"></WebView>-->
+    </VerticalStackLayout>
+</ContentPage>
