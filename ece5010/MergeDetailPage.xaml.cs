@@ -2,9 +2,11 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using CommunityToolkit.Maui.Storage;
 using System.Text;
+using PdfSharp.Snippets.Font;
 namespace ece5010;
 public partial class MergeDetailPage : ContentPage
 {
+    
     IFileSaver fileSaver;
     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -15,15 +17,28 @@ public partial class MergeDetailPage : ContentPage
     public string merge_files_string = " ";
     private string directory_path;
     private string file_name_no_extension;
-
+    private const string fnm="Test";
 
     public MergeDetailPage(IFileSaver fileSaver)
+
     {
+
         InitializeComponent();
+        if (webView.Handler is WebKit.WKWebView wkWebView)
+        {
+            
+            wkWebView.Configuration.Preferences.SetValueForKey(
+                Foundation.NSObject.FromObject(true), 
+                (Foundation.NSString)"allowFileAccessFromFileURLs"
+            );
+        }
+
         this.fileSaver = fileSaver;
 
     }
-    private WebViewSource _pdfWebViewSource;
+    
+    private WebViewSource _pdfWebViewSource= "build/generic/web/viewer.html";
+    // private WebViewSource _pdfWebViewSource = "compressed.tracemonkey-pldi-09.pdf";
     public WebViewSource PdfWebViewSource
     {
         get => _pdfWebViewSource;
@@ -36,8 +51,10 @@ public partial class MergeDetailPage : ContentPage
             }
         }
     }
+    
     private async void OpenFilesButtonClicked(object sender, EventArgs e)
     {
+                
 
         //var result = await FilePicker.PickAsync(new PickOptions
         //{
@@ -68,14 +85,34 @@ public partial class MergeDetailPage : ContentPage
         {
             return;
         }
-
+        
         if (selectedFilePaths_to_merge.Length > 0)
         {
-            PdfWebViewSource = "file:///" + selectedFilePaths_to_merge;
+            //PdfWebViewSource = "file:///" + selectedFilePaths_to_merge;
+            
             await DisplayAlert("Files Selected", $"You have selected the following file(s). \n" +
         merge_files_string, "OK");
         }
         i = i + 1;
+        // string k = "file://" + result.FullPath;
+        // PdfWebViewSource=k;
+    
+    // Optionally, if you want to verify that the file loads correctly:
+    // await DisplayAlert("Debug", "Loading viewer.html from ms-appx-web URI", "OK");
+
+
+//         PdfWebViewSource = new HtmlWebViewSource
+// { Html =$@"
+//                 <title>Custom HTML</title>
+//             </head>
+//             <body>
+//             <a href={k}>k</a>
+//                 <h1>Hello, MAhhUI!</h1>
+//                 <p>This is custom HTML content.</p>
+//             </body>
+//         </html>"
+// };
+
 
     }
     private async void MergeFilesButtonClicked(object sender, EventArgs e)
