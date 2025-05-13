@@ -1,4 +1,4 @@
-##BriskPDF - Open Source PDF Editor
+# BriskPDF - Open Source PDF Editor
 A cross platform application developed using .NET MAUI (Multi-platform App UI)
 
 
